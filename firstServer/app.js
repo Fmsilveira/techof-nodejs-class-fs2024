@@ -1,47 +1,63 @@
 const http = require("http");
+const { URLSearchParams } = require("url");
 
 const server = http.createServer(
   function (request, response) {
-    response.write(`<!DOCTYPE html>
-<html lang="en">
+    const requestUrl = new URL(request.url, 'http://localhost:3000/');
+    const { searchParams } = requestUrl;
+    const path = requestUrl.pathname;
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
+    switch (path) {
+      case '/':
+        response.write('Ola');
+        break;
+      case '/techof':
+        response.write('TechOf');
+        break;
+      case '/search':
 
-<body>
+        response.write(searchParams.toString());
+        break;
+      case '/users':
+        const USERS = [
+          {
+            firstName: 'Bruno',
+            lastName: 'Hirata'
+          },
+          {
+            firstName: 'Bruno',
+            lastName: 'Laje'
+          },
+          {
+            firstName: 'Filipe',
+            lastName: 'Silveira'
+          }
+        ]
+        let firstName = searchParams.get("first-name");
+        let lastName = searchParams.get("last-name");
 
-  <button id="change-image">Change Image</button>
-  <img id="img">
-
-  <script>
-    const IMAGES = [
-      "https://services.meteored.com/img/article/el-origen-del-arbol-de-navidad-y-su-relacion-con-el-solsticio-regalos-papa-noel-jesus-nochebuena-1702113256181_1024.jpeg",
-      "https://thumbs.dreamstime.com/z/christmas-fir-tree-wooden-background-snowflakes-60149534.jpg",
-    ];
-
-    function generateRandomNumber () {
-      return parseInt(Math.random() * IMAGES.length);
+        response.writeHead(200, {
+          'content-type': 'application/json'
+        })
+        response.write(JSON.stringify(
+          USERS.filter(
+            (user) => !firstName || (firstName.toLowerCase() === user.firstName.toLowerCase())
+          ).filter(
+            (user) => !lastName || (lastName.toLowerCase() === user.lastName.toLowerCase())
+          )
+        ));
+        break;
+      default:
+        response.writeHead(404, {
+          'Content-Type': 'text/html'
+        });
+        response.write("<html><body><h1>Page not found</h1></body></html>");
     }
 
-    window.onload = () => {
-      const img = document.getElementById("img");
-      img.src = IMAGES[generateRandomNumber()];
-    };
-
-    document.getElementById("change-image").addEventListener('click', () => {
-      const img = document.getElementById("img");
-      img.src = IMAGES[generateRandomNumber()];
-    });
-  </script>
-</body>
-
-</html>`);
     response.end();
+
   }
 )
 
-server.listen(80);
+server.listen(3000);
 
