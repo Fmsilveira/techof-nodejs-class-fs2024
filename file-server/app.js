@@ -17,7 +17,7 @@ const getIndexPage = async () => {
 }
 
 const getCss = async (name) => {
-  const cssPath = path.join(__dirname, "public", "css", name);
+  const cssPath = path.join(__dirname, "public", ...name.split("/"));
   return await getFileFromPath(cssPath);
 }
 
@@ -32,29 +32,49 @@ const createUser = () => {
   return html.replaceAll('$FIRST_NAME', firstName).replaceAll('$LAST_NAME', lastName);
 }
 
+const classifyPath = (url) => {
+  if (url.match(/css$/)) {
+    return 'CSS';
+  }
+
+  return 'HTML';
+}
+
 const server = http.createServer(
   async (request, response) => {
 
     const path = getPathFromUrl(request.url);
-    switch (path) {
-      case '/':
-        const index = await getIndexPage();
-        response.writeHead(200, { "Content-Type": "text/html" });
-        response.write(index.toString());
-        response.end();
-        break;
-      case '/':
-        let body = '';
-        request.on('data', (chunk) => {
-          body += chunk.toString();
-        });
-        request.on('end', async () => {
-          console.log(body);
+    const pathType = classifyPath(request.url);
+    switch (pathType) {
+      case 'HTML':
+        const { method } = request;
+
+        if ('GET' === method) {
           const index = await getIndexPage();
           response.writeHead(200, { "Content-Type": "text/html" });
           response.write(index.toString());
           response.end();
-        })
+        } else {
+          let body = '';
+          request.on('data', (chunk) => {
+            body += chunk.toString();
+          });
+          request.on('end', async () => {
+            console.log(body);
+            const index = await getIndexPage();
+            response.writeHead(200, { "Content-Type": "text/html" });
+            response.write(index.toString());
+            response.end();
+          })
+          break;
+
+        }
+        break;
+      case 'CSS':
+        const css = await getCss(path);
+        response.writeHead(200, { "Content-Type": "text/css" })
+        response.write(css.toString());
+        response.end();
         break;
 
       default:
