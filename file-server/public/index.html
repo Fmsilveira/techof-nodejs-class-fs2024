@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <div class="form-container">
+    <form action="/users" method="post">
+      <label for="first-name">First Name:</label>
+      <input type="text" id="first-name" name="first-name"><br><br>
+      <label for="last-name">Last Name:</label>
+      <input type="text" id="last-name" name="last-name"><br><br>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div id="users">
+    <div>
+      <p><span style="font-weight: bold;">First Name</span>$FIRST_NAME</p>
+      <p><span style="font-weight: bold;">Last Name</span>$LAST_NAME</p>
+    </div>
+  </div>
+
+</body>
+
+</html>
