@@ -1,0 +1,27 @@
+[
+  {
+    "product": "Laptop",
+    "description": "A high performance laptop",
+    "price": "1200"
+  },
+  {
+    "product": "Smartphone",
+    "description": "A latest model smartphone",
+    "price": "800"
+  },
+  {
+    "product": "Headphones",
+    "description": "Noise-cancelling over-ear headphones",
+    "price": "200"
+  },
+  {
+    "product": "Smartwatch",
+    "description": "A smartwatch with various health features",
+    "price": "250"
+  },
+  {
+    "product": "Tablet",
+    "description": "A tablet with a 10-inch display",
+    "price": "300"
+  }
+]
