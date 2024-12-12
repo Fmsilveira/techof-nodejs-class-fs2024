@@ -15,7 +15,6 @@ const server = http.createServer(
         response.write('TechOf');
         break;
       case '/search':
-
         response.write(searchParams.toString());
         break;
       case '/users':

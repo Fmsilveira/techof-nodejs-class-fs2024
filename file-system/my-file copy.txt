@@ -1,0 +1,3 @@
+Hello, this is a sample text file.
+This file is created to demonstrate writing text in a file using Node.js.
+Feel free to modify this content as needed.
