@@ -15,4 +15,23 @@ const ProdutoSchema = new Schema({
   tags: [String]
 });
 
+ProdutoSchema.pre('save', function (next) {
+  console.log('Pre Save', this.isModified('age'));
+
+  next();
+});
+
+ProdutoSchema.pre('find', function () {
+  // this.find({ price: { $gt: 50 } })
+})
+
+ProdutoSchema.post('validate', function () {
+  console.log('Post Validate')
+})
+
+ProdutoSchema.post('save', function (doc, next) {
+  console.log('Post Save', doc);
+  next();
+});
+
 module.exports = mongoose.model('Produto', ProdutoSchema, 'produto');
