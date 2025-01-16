@@ -4,15 +4,14 @@ const cors = require('cors');
 
 const ProdutoModel = require('./ProdutoModel');
 
-const connectionString = "mongodb+srv://my-new-user:GAWTJzwatdDzC3mZ@techof.0l1vepo.mongodb.net/tech-of-mongodb-class-04-2024?retryWrites=true&w=majority&appName=TechOf";
+require('dotenv').config();
+const CONNECTION_STRING = process.env.CONNECTION_STRING;
 
 const app = express();
 app.use(express.json());
 app.use(cors({
   origin: ['http://localhost:3000'],
 }));
-
-// mongoose.connect(connectionString);
 
 const validateRequestBodyMiddleware = (req, res, next) => {
   function validateRequestBody (params) {
@@ -45,7 +44,7 @@ app.post('/produtos',
   } = body;
 
   try {
-    await mongoose.connect(connectionString);
+    await mongoose.connect(CONNECTION_STRING);
 
     const newProduct = new ProdutoModel({
       title,
@@ -91,7 +90,7 @@ app.post('/produtos/bulk', async (req, res, next) => {
   });
 
   try {
-    await mongoose.connect(connectionString);
+    await mongoose.connect(CONNECTION_STRING);
 
     await ProdutoModel.insertMany(productsModels);
 
@@ -122,7 +121,7 @@ app.patch('/produtos/:id',
   const { id } = req.params;
 
   try {
-    await mongoose.connect(connectionString);
+    await mongoose.connect(CONNECTION_STRING);
 
     const newProduct = {
       title,
@@ -168,7 +167,7 @@ app.get('/produtos/:id', async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    await mongoose.connect(connectionString);
+    await mongoose.connect(CONNECTION_STRING);
     const produto = await ProdutoModel.findById(id);
 
     res.json({
@@ -202,6 +201,7 @@ app.get('/produtos', async (req, res, next) => {
   console.log('queryObj depois parse', queryObj);
 
   try {
+    await mongoose.connect(CONNECTION_STRING);
 
     const produtos = await ProdutoModel.find(
       queryObj,
@@ -230,7 +230,7 @@ app.get('/produtos', async (req, res, next) => {
 
 app.get('/statistics', async (req, res, next) => {
   try {
-    await mongoose.connect(connectionString);
+    await mongoose.connect(CONNECTION_STRING);
 
     const produtos = await ProdutoModel.aggregate([
       {
