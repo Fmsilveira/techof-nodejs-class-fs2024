@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const UserModel = require("../models/UserModel");
+const { createAccessToken } = require('./authService');
 
 const signUp = async ({
   email,
@@ -33,7 +34,7 @@ const login = async ({
     email
   });
 
-  console.log('login', user)
+  console.log('login user', user)
   if (!user) {
     throw new Error('user not found');
   }
@@ -44,10 +45,28 @@ const login = async ({
     throw new Error('failed to authenticate');
   }
 
-  return user;
+  delete user.password;
+  delete user.__v;
+
+  const accessToken = createAccessToken({
+    userId: user._id,
+    email,
+    ...user
+  });
+  return {
+    user,
+    accessToken,
+  };
+}
+
+const getUsers = async () => {
+  const users = await UserModel.find();
+
+  return users;
 }
 
 module.exports = {
   signUp,
   login,
+  getUsers,
 }
