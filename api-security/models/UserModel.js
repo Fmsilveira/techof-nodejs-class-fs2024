@@ -20,7 +20,9 @@ const UserSchema = new Schema({
   created: Date,
   modified: Date,
   isActive: Boolean,
-  permission: {}
+  permissions: Array,
+  // Role Based Access Control (RBAC) => User Admin SuperAdmin
+  // Fined Access Control => Controle por ações => VIEW_ALL_USERS
 });
 
 // A encriptação da senha esta sendo feita no userService

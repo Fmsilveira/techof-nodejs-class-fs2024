@@ -1,7 +1,12 @@
 const express = require('express');
 
 const { signUp, login, getUsers } = require('../services/userService');
-const { verifyAuthorizationHeaderMiddleware, validateAccessTokenMiddleware } = require('../middlewares');
+const {
+  verifyAuthorizationHeaderMiddleware,
+  validateAccessTokenMiddleware,
+  getUserMiddleware,
+  validateUserPermissionMiddleware,
+} = require('../middlewares');
 
 const userRouter = express.Router();
 
@@ -71,6 +76,8 @@ userRouter.post('/login', async (req, res, next) => {
 userRouter.get('',
   verifyAuthorizationHeaderMiddleware,
   validateAccessTokenMiddleware,
+  getUserMiddleware,
+  validateUserPermissionMiddleware('user'),
   async (req, res, next) => {
     try {
       const users = await getUsers();

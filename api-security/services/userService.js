@@ -21,6 +21,9 @@ const signUp = async ({
     isActive: true,
     created: new Date(),
     modified: new Date(),
+    permissions: [
+      'user'
+    ]
   });
 
   return await newUser.save();
@@ -65,8 +68,15 @@ const getUsers = async () => {
   return users;
 }
 
+const getUserById = async (userId) => {
+  const user = await UserModel.findById(userId);
+
+  return user;
+}
+
 module.exports = {
   signUp,
   login,
   getUsers,
+  getUserById,
 }
