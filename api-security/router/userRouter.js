@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { signUp, login, getUsers } = require('../services/userService');
-const { validateAccessToken } = require('../services/authService');
+const { verifyAuthorizationHeaderMiddleware, validateAccessTokenMiddleware } = require('../middlewares');
 
 const userRouter = express.Router();
 
@@ -69,46 +69,8 @@ userRouter.post('/login', async (req, res, next) => {
 });
 
 userRouter.get('',
-  (req, res, next) => {
-    console.log('req.headers', req.headers)
-
-    const { authorization } = req.headers;
-
-    if (!authorization || '' === authorization) {
-      return res.status(401).send({
-        success: false,
-        error: 'Unauthorized'
-      })
-    }
-
-    req.authorization = authorization
-    next()
-  },
-  (req, res, next) => {
-    const { authorization } = req;
-
-    const [_, accessToken] = authorization.split('Bearer ')
-    console.log('accessToken', accessToken);
-
-    req.accessToken = accessToken;
-
-    try {
-      const payload = validateAccessToken(accessToken);
-      console.log('payload', payload)
-
-      req.userId = payload.userId;
-      req.email = payload.email;
-      req.permissions = payload.permissions;
-
-      next();
-    } catch (error) {
-      console.error(error)
-      return res.status(401).send({
-        success: false,
-        error: 'Unauthorized'
-      })
-    }
-  },
+  verifyAuthorizationHeaderMiddleware,
+  validateAccessTokenMiddleware,
   async (req, res, next) => {
     try {
       const users = await getUsers();
