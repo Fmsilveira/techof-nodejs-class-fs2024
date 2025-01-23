@@ -10,6 +10,7 @@ const {
 
 const userRouter = require('./router/userRouter');
 const produtoRouter = require('./router/produtoRouter');
+const flatRouter = require('./router/flatRouter');
 
 const app = express();
 
@@ -18,6 +19,7 @@ const configureApi = () => {
   app.use(express.urlencoded({ extended: false }));
   app.use('/user', userRouter);
   app.use('/product', produtoRouter);
+  app.use('/flat', flatRouter);
 }
 
 const startUp = async () => {
