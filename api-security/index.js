@@ -9,6 +9,7 @@ const {
 } = require('./db');
 
 const userRouter = require('./router/userRouter');
+const produtoRouter = require('./router/produtoRouter');
 
 const app = express();
 
@@ -16,6 +17,7 @@ const configureApi = () => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use('/user', userRouter);
+  app.use('/product', produtoRouter);
 }
 
 const startUp = async () => {
