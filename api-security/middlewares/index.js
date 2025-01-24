@@ -3,6 +3,7 @@ const { validateAccessTokenMiddleware } = require('./validateAccessTokenMiddlewa
 const { getUserMiddleware } = require('./getUserMiddleware');
 const { validateUserPermissionMiddleware} = require('./validateUserPermissionMiddleware');
 const { validateRequestBodyMiddleware } = require('./validateRequestBodyMiddleware');
+const { getUserByEmailMiddleware } = require('./getUserByEmailMiddleware');
 
 module.exports = {
   verifyAuthorizationHeaderMiddleware,
@@ -10,4 +11,5 @@ module.exports = {
   getUserMiddleware,
   validateUserPermissionMiddleware,
   validateRequestBodyMiddleware,
+  getUserByEmailMiddleware,
 }

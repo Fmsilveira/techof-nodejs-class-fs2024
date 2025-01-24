@@ -1,10 +1,12 @@
 const express = require('express');
 
 const { signUp, login, getUsers } = require('../services/userService');
+const { sendForgotPasswordEmail } = require('../services/sendMailService')
 const {
   verifyAuthorizationHeaderMiddleware,
   validateAccessTokenMiddleware,
   getUserMiddleware,
+  getUserByEmailMiddleware,
   validateUserPermissionMiddleware,
 } = require('../middlewares');
 
@@ -72,6 +74,31 @@ userRouter.post('/login', async (req, res, next) => {
     })
   }
 });
+
+userRouter.post('/reset-password',
+  getUserByEmailMiddleware,
+  (req, res, next) => {
+    if (!req.user) {
+      return res.json({
+        success: true,
+        message: 'E-mail enviado com sucesso'
+      })
+    }
+
+    next();
+  },
+  async (req, res, next) => {
+    await sendForgotPasswordEmail({
+      resetPasswordToken: 123,
+      email: 'bruno@bruno.brn'
+    });
+
+    res.json({
+      success: true,
+      message: 'E-mail enviado com sucesso'
+    })
+  }
+)
 
 userRouter.get('',
   verifyAuthorizationHeaderMiddleware,

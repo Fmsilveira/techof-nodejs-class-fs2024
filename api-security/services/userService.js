@@ -62,8 +62,8 @@ const login = async ({
   };
 }
 
-const getUsers = async () => {
-  const users = await UserModel.find();
+const getUsers = async (query) => {
+  const users = await UserModel.find(query);
 
   return users;
 }
