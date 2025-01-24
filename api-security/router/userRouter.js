@@ -1,6 +1,7 @@
 const express = require('express');
 
-const { signUp, login, getUsers } = require('../services/userService');
+const { signUp, login, getUsers, generateResetPasswordToken } = require('../services/userService');
+const { encrypt } = require('../services/cryptoService');
 const { sendForgotPasswordEmail } = require('../services/sendMailService')
 const {
   verifyAuthorizationHeaderMiddleware,
@@ -88,9 +89,14 @@ userRouter.post('/reset-password',
     next();
   },
   async (req, res, next) => {
+    const resetPasswordToken = generateResetPasswordToken();
+    req.user.resetPasswordToken = encrypt(`${resetPasswordToken}`);
+
+    await req.user.save();
+
     await sendForgotPasswordEmail({
-      resetPasswordToken: 123,
-      email: 'bruno@bruno.brn'
+      resetPasswordToken,
+      email: req.user.email
     });
 
     res.json({

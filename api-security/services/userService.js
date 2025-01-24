@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const UserModel = require("../models/UserModel");
 const { createAccessToken } = require('./authService');
+const { encrypt } = require('./cryptoService');
 
 const signUp = async ({
   email,
@@ -9,12 +10,9 @@ const signUp = async ({
   lastName,
   photo,
 }) => {
-  const salt = bcrypt.genSaltSync(12);
-  const encryptedPassword = bcrypt.hashSync(password, salt);
-
   const newUser = new UserModel({
     email,
-    password: encryptedPassword,
+    password: encrypt(password),
     firstName,
     lastName,
     photo,
@@ -74,9 +72,12 @@ const getUserById = async (userId) => {
   return user;
 }
 
+const generateResetPasswordToken = () => Math.round(Math.random() * 100000);
+
 module.exports = {
   signUp,
   login,
   getUsers,
   getUserById,
+  generateResetPasswordToken,
 }

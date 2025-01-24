@@ -21,6 +21,7 @@ const UserSchema = new Schema({
   modified: Date,
   isActive: Boolean,
   permissions: Array,
+  resetPasswordToken: String,
   // Role Based Access Control (RBAC) => User Admin SuperAdmin
   // Fined Access Control => Controle por ações => VIEW_ALL_USERS
 });
