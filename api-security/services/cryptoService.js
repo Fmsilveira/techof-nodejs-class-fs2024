@@ -5,6 +5,14 @@ const encrypt = (data) => {
   return bcrypt.hashSync(data, salt);
 }
 
+const compare = (a, b) => {
+  const result = bcrypt.compareSync(a, b);
+  if (!result) {
+    throw new Error('Does not match');
+  }
+}
+
 module.exports = {
-  encrypt
+  encrypt,
+  compare,
 }
