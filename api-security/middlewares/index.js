@@ -4,6 +4,7 @@ const { getUserMiddleware } = require('./getUserMiddleware');
 const { validateUserPermissionMiddleware} = require('./validateUserPermissionMiddleware');
 const { validateRequestBodyMiddleware } = require('./validateRequestBodyMiddleware');
 const { getUserByEmailMiddleware } = require('./getUserByEmailMiddleware');
+const { getFlatByIdMiddleware } = require('./getFlatByIdMiddleware');
 
 module.exports = {
   verifyAuthorizationHeaderMiddleware,
@@ -12,4 +13,5 @@ module.exports = {
   validateUserPermissionMiddleware,
   validateRequestBodyMiddleware,
   getUserByEmailMiddleware,
+  getFlatByIdMiddleware,
 }

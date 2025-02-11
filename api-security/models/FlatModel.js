@@ -12,7 +12,11 @@ const FlatSchema = new Schema({
     max: [100000, 'The price must be below 100000']
   },
   address: String,
-  tags: [String]
+  tags: [String],
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
 });
 
 module.exports = mongoose.model('Flat', FlatSchema, 'flat');

@@ -5,6 +5,7 @@ const getUserMiddleware = async (req, res, next) => {
 
   const user = await getUserById(userId);
   if (!user) {
+    console.error('User not found');
     return res.status(403).send({
       success: false,
       error: 'Forbidden'
