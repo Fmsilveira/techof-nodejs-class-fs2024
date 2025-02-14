@@ -19,7 +19,7 @@ mongoose.connect(CONNECTION_STRING)
     app.listen(3001, () => {
       console.log('Server listening 3001')
     })
-  });
+  }).catch(error => console.error(error));
 
 process.on('SIGINT', async function() {
   console.log('Closing Mongoose Connection');
